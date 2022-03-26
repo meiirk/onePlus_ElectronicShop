@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="layout/adminPanel.html">
+<div layout:fragment="contentPage">
+
+
+    <form th:action="@{'/editCountry'}" method="post">
+        <input type="hidden" th:value="${country.id}" name="id">
+        <div class="row">
+            <div class="col-12">
+                <label >NAME :</label>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <input type="text" class="form-control" name="name" th:value="${country.name}"  >
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label >CODE :</label>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <input type="text"  class="form-control" name="code"  th:value="${country.code}" required>
+            </div>
+        </div>
+
+
+
+
+        <div class="mt-3">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-success me-md-2" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sd-card-fill m-1" viewBox="0 0 16 16">
+                    <path d="M12.5 0H5.914a1.5 1.5 0 0 0-1.06.44L2.439 2.853A1.5 1.5 0 0 0 2 3.914V14.5A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 12.5 0Zm-7 2.75a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75Zm2 0a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75Zm2.75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 1.5 0Zm1.25-.75a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75Z"/>
+                </svg> Save </button>
+            <button type="button" class="btn btn-danger  " data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill m-1" viewBox="0 0 16 16">
+                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                </svg>   Delete
+            </button>
+        </div>
+        </div>
+
+    </form>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{'/deleteCountry'}" method="post" >
+
+                    <input type="hidden" name="id" th:value="${country.id}">
+                    <div class="modal-header">
+
+                        <h5 class="modal-title" id="exampleModalLabel">Confirm delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >No</button>
+                        <button class="btn btn-danger" >Yes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+</html>

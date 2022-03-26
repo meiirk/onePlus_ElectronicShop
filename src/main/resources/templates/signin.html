@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="layout/main.html">
+<div layout:fragment="contentPage">
+
+    <form th:action="@{'/toenter'}" method="post">
+        <div class="col-5 offset-3">
+        <div class="row mt-3">
+            <div class="col">
+                <label >EMAIL :</label>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <input type="email" class="form-control" name="user_email" placeholder="Email" required>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <label >PASSWORD :</label>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <input type="password"  class="form-control" name="user_password" placeholder="Password" required>
+            </div>
+        </div>
+
+        <div class="row mt-3 mx-auto">
+            <div class="col-8"><p class="text-center">If you are not registered click <a  th:href="@{'/signup'}" style="text-decoration: none" sec:authorize="isAnonymous()">here</a>  </p>
+            </div>
+            <div class="col-4  mx-auto justify-content-md-end ">
+                <button class=" btn" style="background-color: rgba(21, 97, 69, 1); color: white; padding-right: 25px;padding-left: 26px">SIGN IN</button>
+            </div>
+
+
+        </div>
+        </div>
+    </form>
+
+
+
+</div>
+
+</html>

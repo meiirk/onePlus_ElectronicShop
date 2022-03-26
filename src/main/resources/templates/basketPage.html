@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/main.html}">
+<div layout:fragment="contentPage">
+    <div class="card text-center ">
+        <div class="card-header">
+           <b>Basket</b>
+        </div>
+        <div class="card-body">
+            <table class="table ">
+
+                <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col"></th>
+
+                </tr>
+
+
+                <tr th:each="i:${items}" th:if="${i!=null}">
+                    <th th:text="${i.getKey().name}"></th>
+                    <td th:text="${i.getKey().price}+${'$'}"></td>
+                    <td th:text="${i.getValue()}"></td>
+
+                     <td>
+
+                             <form th:action="@{'/addAmount'}" method="post">
+                                 <input type="hidden" th:value="${i.getKey().id}" name="item_id">
+                                 <input type="hidden" th:value="${i.getKey().name}" name="name">
+                                 <button class="btn btn-success m-1">+</button>
+                             </form>
+
+                             <form th:action="@{'/deleteAmount'}" method="post">
+                                 <input type="hidden" th:value="${i.getKey().id}" name="item_id">
+                                 <input type="hidden" th:value="${i.getKey().name}" name="name">
+                                 <button class="btn btn-danger">-</button>
+                             </form>
+
+
+
+                    </td>
+                </tr>
+
+            </table>
+            <b th:text="${'TOTAL:'}+ ${totalPrice}+${'$'}"></b>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+             <div class="row">
+             </div>
+                <button  class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-sd-card-fill m-1" viewBox="0 0 16 16">
+                        <path d="M12.5 0H5.914a1.5 1.5 0 0 0-1.06.44L2.439 2.853A1.5 1.5 0 0 0 2 3.914V14.5A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 12.5 0Zm-7 2.75a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75Zm2 0a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75Zm2.75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 1.5 0Zm1.25-.75a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75Z"/>
+                    </svg>
+                    CHECK IN
+                </button>
+                <form th:action="@{'/clearBasket'}" method="post">
+
+                    <button class="btn btn-primary  btn-sm" style="margin-left: 10px">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-trash3-fill m-1" viewBox="0 0 16 16">
+                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                        </svg>
+                        CLEAR BASKET
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-grid gap-2 d-md-block">
+                        <button class="btn btn-dark btn-sm"><img
+                                src="https://img.icons8.com/cotton/64/000000/apple-pay.png"/></button>
+                        <button class="btn btn-dark btn-sm"><img
+                                src="https://img.icons8.com/cotton/64/000000/mastercard-logo--v1.png"/></button>
+                        <button class="btn btn-dark btn-sm"><img
+                                src="https://img.icons8.com/cotton/64/000000/paypal--v1.png"/></button>
+                        <button class="btn btn-dark btn-sm"><img src="https://img.icons8.com/cotton/64/000000/jcb.png"/>
+                        </button>
+                    </div>
+                </div>
+
+                <form th:action="@{'/checkIn'}" method="post" class="row g-3">
+                        <div class="modal-body">
+                        <input type="hidden" name="by_items" th:value="${items}">
+                        <input type="hidden" name="totalPrice" th:value="${totalPrice}">
+
+                        <div class="col-12">
+                            <label class="form-label"> Full Name :</label>
+                            <input type="text" class="form-control" name="fullName" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label"> Card Number:</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Expirations(MM/YY)</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">CVV</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success me-md-2">Pay</button>
+                        </div>
+                    </form>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

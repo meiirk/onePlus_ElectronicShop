@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="layout/main.html">
+<div layout:fragment="contentPage">
+    <div class="col-5 offset-3">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="input-group mb-3" >
+                    <img  th:src="@{'/viewphoto/'+${currentUser.pictureURL}}" class="rounded-circle my-3"
+                         style="height: 200px; width: 200px" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <form th:action="@{'/changePicture'}" method="post" enctype="multipart/form-data">
+                <label for="formFile" class="form-label mt-2"></label>
+                <input class="form-control mt-3" type="file" id="formFile" name="picture">
+                <div class=" d-grid gap-2 d-md-flex justify-content-md-end ">
+                    <button class="btn  btn-sm mt-3" style="background-color: rgba(21, 97, 69, 1); color: white">UPDATE PICTURE
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="row">
+
+            <form th:action="@{'/changeProfile'}" method="post">
+
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>Email:</label>
+
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input class="form-control" type="text" name="email" th:value="${currentUser.email}" disabled>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>Full name:</label>
+
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input class="form-control" type="text" name="fullname" th:value="${currentUser.fullName}">
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class=" d-grid gap-2 d-md-flex justify-content-md-end ">
+                        <button class="btn btn-sm " style="background-color:rgba(21, 97, 69, 1); color: white">UPDATE PROFILE
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="row">
+
+            <form th:action="@{'/changePassword'}" method="post">
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>OLD PASSWORD :</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input class="form-control" type="password" name="old_password">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>NEW PASSWORD :</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input class="form-control" type="password" name="new_password">
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>RETYPE PASSWORD :</label>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <input class="form-control" type="password" name="retype_password">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end ">
+                        <button class="btn btn-sm " style="background-color:rgba(21, 97, 69, 1);color: white">UPDATE PASSWORD
+                        </button>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+</html>

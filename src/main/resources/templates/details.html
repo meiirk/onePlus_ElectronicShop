@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="layout/main.html">
+<div layout:fragment="contentPage">
+
+    <div class="card mb-3" th:if="${item!=null}">
+        <input type="hidden" th:value="${item.id}" id="itemId" name="itemId">
+        <input     type="hidden" th:value="${currentUser.id}" id="currentUserId"  sec:authorize="isAuthenticated()">
+        <input type="hidden" name="id" th:value="${item.id}">
+        <img th:src="${item.largePicURL}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <a class="card-title" th:href="@{'/details/'+ ${item.id}}"
+               style="color: #005cbf; text-decoration: none; font-size: medium"><b th:text="${item.name}"></b></a><br>
+            <b th:text="${item.price}+${'$'}"></b>
+            <p class="card-text" th:text="${item.description}"></p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted" th:text="${'Rating:'}+${item.stars}"> </small>
+        </div>
+
+        <form th:action="@{'/addToBasket'}" method="post">
+            <input type="hidden" th:value="${item.id}" name="id">
+            <input type="hidden" th:value="${item.name}" name="name">
+
+            <button class=" btn btn"
+                    style="background-color: rgba(21, 97, 69, 1);color: white; margin-top: 10px; margin-bottom: 10px;margin-left: 10px ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     class="bi bi-cart-fill m-2" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+                Add to Basket
+            </button>
+
+        </form>
+
+
+
+        <div class="mt-3"  sec:authorize="isAuthenticated()">
+            <div class="row">
+                <div class="col-12">
+                    <textarea name="comment" id="comment" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="row mt-3" >
+                <div class="col-12">
+                    <button class="btn btn-success btn-sm" onclick="toLeaveComment()">ADD COMMENTS</button>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                var comment = document.getElementById("comment");
+
+                function toLeaveComment() {
+                    var itemId = document.getElementById("itemId").value;
+                    var xhttp = new XMLHttpRequest();
+
+                    xhttp.onload = function () {
+                        comment.value = "";
+                        loadAllComments();
+                    }
+                    xhttp.open("POST", "/api/addComment");
+                    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhttp.send("comment=" + comment.value + "&itemId=" + itemId);
+                }
+
+
+            </script>
+        </div>
+
+        <div class="mt-3">
+            <div class="list-group" id="commentsList">
+                <script type="text/javascript">
+                    function loadAllComments() {
+                        var itemId = document.getElementById("itemId").value;
+
+                        var currentUserId = document.getElementById("currentUserId");
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onload = function () {
+                            var commentHtml = "";
+                            var commentsList = JSON.parse(this.responseText);
+                            for (let i = 0; i < commentsList.length; i++) {
+                                commentHtml += " <a href='JavaScript:void(0)'  class='list-group-item list-group-item-action' >";
+                                commentHtml += " <div class='d-flex w-100 justify-content-between'>";
+                                commentHtml += "<h5 class='mb-1'>" + commentsList[i].fullName + "</h5>";
+                                if (currentUserId!=null&&currentUserId.value == commentsList[i].user_id) {
+                                    commentHtml += "<button class='btn btn-danger d-grid gap-2 d-md-flex justify-content-md-end' onclick='deleteComment("+commentsList[i].id+")'> <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash3-fill' viewBox='0 0 16 16' >" +
+                                        " <path d='M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z'>" +
+                                        " </svg></button>";
+                                }
+                                commentHtml += "</div>";
+                                commentHtml += " <p class='mb-1 '>" + commentsList[i].commentText + "</p>"
+                                commentHtml += "<small class='text-muted mx-auto'>"+commentsList[i].addedDate + "</small>";
+                                commentHtml += "</a>";
+
+                            }
+
+                            document.getElementById("commentsList").innerHTML = commentHtml;
+                        }
+                        xhttp.open("GET", "http://localhost:8000/api/allComments?itemId=" + itemId);
+                        xhttp.send();
+
+                    }
+
+                    function deleteComment(id) {
+                        var conf = confirm("Are you sure?"+id);
+                        if (conf) {
+
+                            var xhttp = new XMLHttpRequest();
+                            xhttp.onload = function () {
+                                loadAllComments();
+                            }
+                            xhttp.open("POST", "/api/deleteComment");
+                            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                            xhttp.send("id=" + id);
+                        }
+
+                    }
+
+                    window.onload = loadAllComments;
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-3 " th:if="${item==null}">
+    <div class="col-10 mx-auto">
+        <p>404 NEWS NOT FOUND</p>
+    </div>
+</div>
+
+
+</div>
+</div>
+
+
+</html>

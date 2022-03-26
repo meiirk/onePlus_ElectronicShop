@@ -1,0 +1,55 @@
+body{
+
+    background-color: #95999c;
+}
+.rating{
+    position: absolute;
+
+    transform: translate(-50%,-50%)rotateY(180deg);
+    display: flex;
+}
+.rating input{
+
+}
+
+.rating label{
+    display: block;
+    cursor:pointer;
+    width: 50px;
+    background-color: #ccc;
+}
+
+.rating label:before{
+    content: '\f005';
+    font-family: fontAwesome;
+    position: relative;
+    display: block;
+    font-size: 50px;
+    color:#5a6268 ;
+
+}
+
+.rating label:after{
+    content: '\f005';
+    font-family: fontAwesome;
+    position: absolute;
+    display: block;
+    font-size: 50px;
+    color: #d39e00;
+    top: 0;
+    opacity: 1;
+    transition: .5s;
+    text-shadow: 0 2px 5px rgba(0,0,0,.5);
+
+}
+
+.rating label:hover:after,
+.rating label:hover~label:after,
+.rating label:checked~label:after{
+opacity: 1;
+}
+
+
+
+
+

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"  layout:decorate="layout/main.html">
+<div layout:fragment="contentPage">
+    <form class="row g-3" th:action="@{'/search'}" method="get">
+        <div class="col-md-3">
+            <label  class="form-label">Name:</label>
+            <input  type="text" class="form-control" id="name" name="name" onkeyup='saveValue(this);' placeholder="Enter to search..">
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Price from:</label>
+            <input type="text " id="priceFrom" class="form-control" name="priceFrom" onkeyup='saveValue(this);' >
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Price To:</label>
+            <input type="text" id="priceTo" class="form-control" name="priceTo" onkeyup='saveValue(this);'>
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label">Order by price:</label>
+            <select  class="form-select" name="accAndDesc"  >
+                <option th:value="asc">Ascending</option>
+                <option th:value="desc">Descending</option>
+            </select>
+        </div>
+        <div class="col-md-3 mt-5">
+            <button   class=" btn "  style="background-color: rgba(21, 97, 69, 1); padding-left: 60px; padding-right: 60px; color: white" >Search</button>
+        </div>
+
+    </form>
+
+    <script>
+        document.getElementById("name").value = getSavedValue("name");
+        document.getElementById("priceTo").value = getSavedValue("priceTo");
+        document.getElementById("priceFrom").value = getSavedValue("priceFrom");
+
+        function saveValue(e) {
+            var id = e.id;
+            var val = e.value;
+            localStorage.setItem(id, val);
+        }
+
+        function getSavedValue(v) {
+            if (localStorage.getItem(v) === null) {
+                return "";
+            }
+            return localStorage.getItem(v);
+        }
+    </script>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <h4>Search results:</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+
+            <div class="col"  th:each="i :${shopItems}" th:if="${i.inTopPage}">
+                <div class="card">
+                    <img th:src="${i.smallPicURL}"  class="card-img-top" style="width:300px ;height: 300px" alt="...">
+                    <div class="card-body">
+                        <a  class="card-title"   th:href="@{'/details/'+ ${i.id}}" style="color: #005cbf; text-decoration: none; font-size: medium; " ><b th:text="${i.name}"> </b></a><br>
+                        <b  th:text="${i.price}+${'$'}"></b>
+                        <p class="card-text" style="font-family: Arial" th:text="${i.description}"></p>
+                        <b style="color: #005cbf" th:text="${'Brand:'}+ ${i.getBrand().name}+${','}+${i.getBrand().country.name}"> </b>
+                    </div>
+
+                    <div class="card-footer">
+                        <div>
+                            Rating :   <small class="text-muted" th:text="${i.stars}"> </small>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</html>
